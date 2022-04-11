@@ -1,0 +1,32 @@
+kind: pipeline
+type: docker
+name: default
+trigger:
+  branch: master
+
+steps:
+  - name: statik
+    image: golang:latest
+    depends_on:
+      - clone
+    commands:
+      - go install github.com/rakyll/statik
+      - statik -src=./include/ -dest=./wasm/
+
+  - name: golangci-lint
+    image: golangci/golangci-lint:latest
+    depends_on:
+      - statik
+    environment:
+      GOOS: js
+      GOARCH: wasm
+    commands:
+      - golangci-lint run ./wasm/
+      - golangci-lint run ./server/
+
+  - name: flake8
+    image: pipelinecomponents/flake8:latest
+    depends_on:
+      - clone
+    commands:
+      - flake8

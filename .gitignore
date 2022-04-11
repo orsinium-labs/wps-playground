@@ -1,0 +1,5 @@
+/build/
+/wasm/statik/
+.pytest_cache/
+/public/
+/server.bin
