@@ -1,0 +1,4 @@
+[build]
+publish = "public/"
+command = "./build.sh"
+environment = {GO_VERSION = "1.18"}
