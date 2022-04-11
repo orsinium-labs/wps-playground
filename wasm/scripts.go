@@ -28,11 +28,11 @@ func (sc *Scripts) Read(fname string) []byte {
 }
 
 func (sc *Scripts) ReadConfig() string {
-	return string(sc.Read("/config.toml"))
+	return string(sc.Read("/setup.cfg"))
 }
 
 func (sc *Scripts) ReadFlakeHell() string {
-	return string(sc.Read("/flakehell.py"))
+	return string(sc.Read("/flake8.py"))
 }
 
 func (sc *Scripts) ReadExample() string {

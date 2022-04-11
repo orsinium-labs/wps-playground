@@ -58,7 +58,6 @@ func (fh *FlakeHell) Register() {
 func (fh *FlakeHell) Run() {
 	fh.py.Clear()
 	fh.py.Set("text", fh.editor.Call("getValue").String())
-	fh.py.Set("config", fh.conf.Text())
 	fh.py.RunAndPrint(fh.script)
 
 	fh.py.Clear()

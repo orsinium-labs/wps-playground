@@ -10,25 +10,24 @@ import (
 func main() {
 	window := web.GetWindow()
 	doc := window.Document()
-	doc.SetTitle("FlakeHell online")
+	doc.SetTitle("WPS Playground")
 
 	// init code editor
 	input := doc.Element("py-code")
 	scripts := NewScripts()
 	ex := scripts.ReadExample()
 	input.SetInnerHTML(ex)
+	doc.Element("py-config").SetInnerHTML(scripts.ReadConfig())
 	editor := window.Get("CodeMirror").Call("fromTextArea",
-		input,
+		input.JSValue(),
 		map[string]interface{}{
 			"lineNumbers": true,
-		})
-
-	config := doc.Element("py-config")
-	config.SetText(scripts.ReadConfig())
+		},
+	)
 
 	// load python
 	py := Python{doc: doc, output: doc.Element("py-output")}
-	py.PrintIn("Load Python")
+	py.PrintIn("Loading Python...")
 	window.Get("languagePluginLoader").Promise().Get()
 	py.PrintOut("Python is ready")
 	py.pyodide = window.Get("pyodide")
@@ -41,7 +40,7 @@ func main() {
 
 	// skip nighty packages
 	skip := map[string]string{
-		"flake8-quotes":         "2.1.2",
+		"flake8-quotes":         "3.3.1",
 		"flake8-bugbear":        "19.3",
 		"flake8-rst-docstrings": "0.0.12",
 		"flake8-eradicate":      "0.3.0",
@@ -63,7 +62,7 @@ func main() {
 	py.Install("setuptools")
 	py.Install("entrypoints")
 	py.Install("flake8-builtins==1.5.3")
-	py.Install("flakehell==0.7.0")
+	py.Install("wemake-python-styleguide==0.14.1")
 
 	// install non-wheel dependencies
 	py.RunAndPrint("import sys")
@@ -82,11 +81,8 @@ func main() {
 		py.RunAndPrint(extract)
 	}
 
-	installer := Installer{py: &py, doc: doc, win: window}
-	installer.Init()
-
-	flakehell := NewFlakeHell(window, doc, editor, &py)
-	flakehell.Register()
+	flake8 := NewFlakeHell(window, doc, editor, &py)
+	flake8.Register()
 
 	py.Clear()
 	py.PrintOut("Ready!")

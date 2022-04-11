@@ -21,7 +21,7 @@ def random_name():
 
 
 # save flakehell config
-Path("pyproject.toml").write_text(config)  # noqa: F821
+Path("setup.cfg").write_text(config)  # noqa: F821
 
 # save source code
 path = Path(random_name())
