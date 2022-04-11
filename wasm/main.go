@@ -40,16 +40,13 @@ func main() {
 
 	// skip nighty packages
 	skip := map[string]string{
-		"flake8-quotes":         "3.3.1",
-		"flake8-bugbear":        "19.3",
-		"flake8-rst-docstrings": "0.0.12",
-		"flake8-eradicate":      "0.3.0",
-		"flake8-isort":          "3.0.1",
 		"flake8-bandit":         "2.1.1",
+		"flake8-quotes":         "3.3.1",
 		"lazy-object-proxy":     "1.4.0",
-		"wrapt":                 "1.11.0",
-		"typed-ast":             "1.4.1",
+		"restructuredtext-lint": "1.4.0",
 		"six":                   "1.15.0",
+		"typed-ast":             "1.4.1",
+		"wrapt":                 "1.11.0",
 	}
 	for pname, pversion := range skip {
 		cmd := "micropip.PACKAGE_MANAGER.installed_packages['%s'] = '%s'"
@@ -62,12 +59,14 @@ func main() {
 	py.Install("setuptools")
 	py.Install("entrypoints")
 	py.Install("flake8-builtins==1.5.3")
-	py.Install("wemake-python-styleguide==0.14.1")
+	py.Install("docutils==0.18.1")
+	py.Install("wemake-python-styleguide==0.16.1")
 
 	// install non-wheel dependencies
 	py.RunAndPrint("import sys")
 	py.RunAndPrint("sys.path.insert(0, '.')")
 	unzip := []string{
+		"/restructuredtext_lint.zip",
 		"/flake8_quotes.zip",
 		"/lazy_object_proxy.zip",
 		"/wrapt.zip",
