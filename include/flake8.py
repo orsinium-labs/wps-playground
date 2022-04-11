@@ -20,7 +20,7 @@ def random_name():
     return name + '.py'
 
 
-# save flakehell config
+# save flake8 config
 Path("setup.cfg").write_text(config)  # noqa: F821
 
 # save source code
@@ -49,7 +49,6 @@ class Formatter(BaseFormatter):
             column=error.column_number,
 
             context=error.physical_line,
-            plugin=getattr(error, 'plugin', None),
         ))
 
 
@@ -58,11 +57,11 @@ class App(Application):
         self.formatter = Formatter(self.options)
 
 
-# run flakehell
+# run flake8
 app = App()
 code = 0
 try:
-    app.run([str(path)])
+    app.run(['--jobs=0', str(path)])
     app.exit()
 except SystemExit as err:
     code = int(err.args[0])

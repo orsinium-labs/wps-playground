@@ -1,4 +1,4 @@
-module github.com/life4/flakehell-online
+module github.com/life4/wps-playground
 
 go 1.18
 

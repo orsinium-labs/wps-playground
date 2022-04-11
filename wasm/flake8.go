@@ -9,7 +9,7 @@ import (
 	"github.com/life4/gweb/web"
 )
 
-type FlakeHell struct {
+type Flake8 struct {
 	script string
 	btn    web.HTMLElement
 	conf   web.HTMLElement
@@ -28,10 +28,10 @@ type Violation struct {
 	Plugin      string
 }
 
-func NewFlakeHell(win web.Window, doc web.Document, editor web.Value, py *Python) FlakeHell {
+func NewFlake8(win web.Window, doc web.Document, editor web.Value, py *Python) Flake8 {
 	scripts := NewScripts()
-	script := scripts.ReadFlakeHell()
-	return FlakeHell{
+	script := scripts.ReadFlake8()
+	return Flake8{
 		script: script,
 		btn:    doc.Element("py-lint"),
 		conf:   doc.Element("py-config"),
@@ -43,7 +43,7 @@ func NewFlakeHell(win web.Window, doc web.Document, editor web.Value, py *Python
 
 }
 
-func (fh *FlakeHell) Register() {
+func (fh *Flake8) Register() {
 	fh.btn.Set("disabled", false)
 
 	wrapped := func(this js.Value, args []js.Value) interface{} {
@@ -55,9 +55,10 @@ func (fh *FlakeHell) Register() {
 	fh.btn.Call("addEventListener", "click", js.FuncOf(wrapped))
 }
 
-func (fh *FlakeHell) Run() {
+func (fh *Flake8) Run() {
 	fh.py.Clear()
 	fh.py.Set("text", fh.editor.Call("getValue").String())
+	fh.py.Set("config", fh.conf.Text())
 	fh.py.RunAndPrint(fh.script)
 
 	fh.py.Clear()
@@ -84,22 +85,11 @@ func (fh *FlakeHell) Run() {
 		violations = append(violations, v)
 	}
 
-	// read links to plugins
-	fh.py.Run("from flakehell._constants import KNOWN_PLUGINS")
-	fh.py.Run("import json")
-	result = fh.py.Run("json.dumps(dict(KNOWN_PLUGINS.items()))")
-	plugins := make(map[string]string)
-	err := json.Unmarshal([]byte(result), &plugins)
-	if err != nil {
-		fh.py.PrintErr(err.Error())
-		return
-	}
-
 	fh.py.Clear()
-	fh.table(violations, plugins)
+	fh.table(violations)
 }
 
-func (fh *FlakeHell) table(violations []Violation, plugins map[string]string) {
+func (fh *Flake8) table(violations []Violation) {
 	table := fh.doc.CreateElement("table")
 	table.Attribute("class").Set("table table-sm")
 
@@ -108,7 +98,7 @@ func (fh *FlakeHell) table(violations []Violation, plugins map[string]string) {
 	tr := fh.doc.CreateElement("tr")
 	thead.Node().AppendChild(tr.Node())
 
-	cols := []string{"plugin", "code", "descr", "pos", "context"}
+	cols := []string{"code", "descr", "pos", "context"}
 	for _, name := range cols {
 		th := fh.doc.CreateElement("th")
 		th.SetText(name)
@@ -120,20 +110,6 @@ func (fh *FlakeHell) table(violations []Violation, plugins map[string]string) {
 
 	for _, vl := range violations {
 		tr := fh.doc.CreateElement("tr")
-
-		url, ok := plugins[vl.Plugin]
-		if ok {
-			td := fh.doc.CreateElement("td")
-			a := fh.doc.CreateElement("a")
-			a.Attribute("href").Set(url)
-			a.SetText(vl.Plugin)
-			td.Node().AppendChild(a.Node())
-			tr.Node().AppendChild(td.Node())
-		} else {
-			td := fh.doc.CreateElement("td")
-			td.SetText(vl.Plugin)
-			tr.Node().AppendChild(td.Node())
-		}
 
 		td := fh.doc.CreateElement("td")
 		td.SetText(vl.Code)

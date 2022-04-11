@@ -34,42 +34,40 @@
     <a href="https://github.com/wemake-services/wemake-python-styleguide" target="_blank">wemake-python-styleguide</a>
     playground (<a href="https://github.com/orsinium-labs/wps-playground" target="_blank">GitHub</a>)
   </h5>
-  <div class="container-fluid">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">code.py</h5>
-              <textarea class="card-text" id="py-code" contenteditable="true">a=1+2</textarea>
-              <button href="#" class="btn btn-outline-primary" disabled id="py-lint">
-                run wps
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">setup.cfg</h5>
-              <pre class="card-text" id="py-config" contenteditable="true"></pre>
-            </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">code.py</h5>
+            <textarea class="card-text" id="py-code" contenteditable="true">a=1+2</textarea>
+            <button href="#" class="btn btn-outline-primary" disabled id="py-lint">
+              run flake8
+            </button>
           </div>
         </div>
       </div>
-
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">console</h5>
-              <div class="card-text" id="py-output"></div>
-            </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">setup.cfg</h5>
+            <pre class="card-text" id="py-config" contenteditable="true"></pre>
           </div>
         </div>
       </div>
-
     </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">console</h5>
+            <div class="card-text" id="py-output"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- load syntax highlighter -->

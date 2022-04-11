@@ -58,7 +58,7 @@ func main() {
 
 	// install dependencies
 	py.Clear()
-	py.Install("flake8==3.8.0")
+	py.Install("flake8==3.9.2")
 	py.Install("setuptools")
 	py.Install("entrypoints")
 	py.Install("flake8-builtins==1.5.3")
@@ -81,7 +81,7 @@ func main() {
 		py.RunAndPrint(extract)
 	}
 
-	flake8 := NewFlakeHell(window, doc, editor, &py)
+	flake8 := NewFlake8(window, doc, editor, &py)
 	flake8.Register()
 
 	py.Clear()

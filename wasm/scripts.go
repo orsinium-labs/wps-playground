@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	_ "github.com/life4/flakehell-online/wasm/statik"
+	_ "github.com/life4/wps-playground/wasm/statik"
 
 	"github.com/rakyll/statik/fs"
 )
@@ -31,7 +31,7 @@ func (sc *Scripts) ReadConfig() string {
 	return string(sc.Read("/setup.cfg"))
 }
 
-func (sc *Scripts) ReadFlakeHell() string {
+func (sc *Scripts) ReadFlake8() string {
 	return string(sc.Read("/flake8.py"))
 }
 
