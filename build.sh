@@ -5,6 +5,6 @@ cp ./frontend/* ./public/
 cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" ./public/script.js
 
 export GOPATH=$(go env GOPATH)
-$GOPATH/bin/statik -src=./include/ -dest=./wasm/
+statik -src=./include/ -dest=./wasm/
 
 GOOS=js GOARCH=wasm go build -o public/frontend.wasm ./wasm/
