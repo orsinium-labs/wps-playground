@@ -44,12 +44,14 @@ func NewFlake8(win web.Window, doc web.Document, editor web.Value, py *Python) F
 }
 
 func (fh *Flake8) Register() {
+	fh.btn.SetInnerHTML("run flake8")
 	fh.btn.Set("disabled", false)
 
 	wrapped := func(this js.Value, args []js.Value) interface{} {
+		fh.btn.SetInnerHTML("running...")
 		fh.btn.Set("disabled", true)
 		fh.Run()
-		fh.Register()
+		go fh.Register()
 		return true
 	}
 	fh.btn.Call("addEventListener", "click", js.FuncOf(wrapped))
