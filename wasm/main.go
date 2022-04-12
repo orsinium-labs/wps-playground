@@ -63,8 +63,8 @@ func main() {
 	py.RunAndPrint("import sys")
 	py.RunAndPrint("sys.path.insert(0, '.')")
 	unzip := []string{
-		"/restructuredtext_lint.zip",
-		"/flake8_quotes.zip",
+		"include/restructuredtext_lint.zip",
+		"include/flake8_quotes.zip",
 	}
 	extract := scripts.ReadExtract()
 	for _, name := range unzip {

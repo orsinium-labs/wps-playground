@@ -5,18 +5,8 @@ trigger:
   branch: master
 
 steps:
-  - name: statik
-    image: golang:latest
-    depends_on:
-      - clone
-    commands:
-      - go install github.com/rakyll/statik
-      - statik -src=./include/ -dest=./wasm/
-
   - name: golangci-lint
     image: golangci/golangci-lint:latest
-    depends_on:
-      - statik
     environment:
       GOOS: js
       GOARCH: wasm

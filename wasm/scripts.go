@@ -1,21 +1,18 @@
 package main
 
 import (
+	"embed"
 	"io/ioutil"
 	"log"
-	"net/http"
-
-	_ "github.com/life4/wps-playground/wasm/statik"
-
-	"github.com/rakyll/statik/fs"
 )
 
-type Scripts struct {
-	sfs http.FileSystem
-}
+//go:embed include/*
+var included embed.FS
+
+type Scripts struct{}
 
 func (sc *Scripts) Read(fname string) []byte {
-	file, err := sc.sfs.Open(fname)
+	file, err := included.Open(fname)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -27,26 +24,26 @@ func (sc *Scripts) Read(fname string) []byte {
 	return content
 }
 
+// Read default flake8 config
 func (sc *Scripts) ReadConfig() string {
-	return string(sc.Read("/setup.cfg"))
+	return string(sc.Read("include/setup.cfg"))
 }
 
+// Read the script for running flake8
 func (sc *Scripts) ReadFlake8() string {
-	return string(sc.Read("/flake8.py"))
+	return string(sc.Read("include/flake8.py"))
 }
 
+// Read the example.py shown in the input box by default
 func (sc *Scripts) ReadExample() string {
-	return string(sc.Read("/example.py"))
+	return string(sc.Read("include/example.py"))
 }
 
+// Read the script for extracting a zip file into the Python FS.
 func (sc *Scripts) ReadExtract() string {
-	return string(sc.Read("/extract.py"))
+	return string(sc.Read("include/extract.py"))
 }
 
 func NewScripts() Scripts {
-	sfs, err := fs.New()
-	if err != nil {
-		log.Fatal(err)
-	}
-	return Scripts{sfs: sfs}
+	return Scripts{}
 }
