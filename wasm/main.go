@@ -57,6 +57,7 @@ func main() {
 	py.Install("entrypoints")
 	py.Install("flake8-builtins==1.5.3")
 	py.Install("docutils")
+	py.Install("flake8-polyfill") // https://github.com/PyCQA/pep8-naming/issues/202
 	py.Install("wemake-python-styleguide==0.16.1")
 
 	// install non-wheel dependencies
