@@ -42,7 +42,7 @@ func (py Python) RunAndPrint(cmd string) {
 }
 
 func (py Python) Install(pkg string) bool {
-	cmd := fmt.Sprintf("micropip.install('%s')", pkg)
+	cmd := fmt.Sprintf("micropip.install('%s', deps=False)", pkg)
 	py.PrintIn(cmd)
 	_, fail := py.pyodide.Call("runPython", cmd).Promise().Get()
 	if fail.Truthy() {
@@ -54,7 +54,7 @@ func (py Python) Install(pkg string) bool {
 }
 
 func (py Python) Set(name string, text string) {
-	py.pyodide.Get("globals").Set(name, text)
+	py.pyodide.Get("globals").Call("set", name, text)
 }
 
 func (py Python) Clear() {

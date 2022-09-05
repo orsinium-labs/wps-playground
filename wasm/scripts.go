@@ -4,6 +4,7 @@ import (
 	"embed"
 	"io/ioutil"
 	"log"
+	"strings"
 )
 
 //go:embed include/*
@@ -42,6 +43,12 @@ func (sc *Scripts) ReadExample() string {
 // Read the script for extracting a zip file into the Python FS.
 func (sc *Scripts) ReadExtract() string {
 	return string(sc.Read("include/extract.py"))
+}
+
+// Read the requirements.txt file (list of Python dependencies).
+func (sc *Scripts) ReadDeps() []string {
+	content := string(sc.Read("include/requirements.txt"))
+	return strings.Split(content, "\n")
 }
 
 func NewScripts() Scripts {
