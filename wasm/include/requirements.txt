@@ -1,3 +1,4 @@
+setuptools==65.3.0
 snowballstemmer==2.2.0
 mccabe==0.6.1
 eradicate==2.1.0
@@ -15,13 +16,13 @@ darglint==1.8.1
 attrs==22.1.0
 astor==0.8.1
 stevedore==4.0.0
-# restructuredtext-lint==1.4.0  # installed from file
+./restructuredtext_lint-1.4.0-py3-none-any.whl
 gitdb==4.0.9
 flake8==4.0.1
 gitpython==3.1.27
 flake8-string-format==0.3.0
 flake8-rst-docstrings==0.2.7
-# flake8-quotes==3.3.1  # installed from file
+./flake8_quotes-3.3.1-py3-none-any.whl
 flake8-polyfill==1.0.2
 flake8-isort==4.2.0
 flake8-eradicate==1.3.0

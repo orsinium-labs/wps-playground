@@ -40,11 +40,6 @@ func (sc *Scripts) ReadExample() string {
 	return string(sc.Read("include/example.py"))
 }
 
-// Read the script for extracting a zip file into the Python FS.
-func (sc *Scripts) ReadExtract() string {
-	return string(sc.Read("include/extract.py"))
-}
-
 // Read the requirements.txt file (list of Python dependencies).
 func (sc *Scripts) ReadDeps() []string {
 	content := string(sc.Read("include/requirements.txt"))

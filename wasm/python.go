@@ -38,7 +38,9 @@ func (py Python) Run(cmd string) string {
 func (py Python) RunAndPrint(cmd string) {
 	py.PrintIn(cmd)
 	result := py.Run(cmd)
-	py.PrintOut(result)
+	if result != "<undefined>" {
+		py.PrintOut(result)
+	}
 }
 
 func (py Python) Install(pkg string) bool {

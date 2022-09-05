@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/base64"
-
 	"github.com/life4/gweb/web"
 )
 
@@ -51,21 +49,6 @@ func main() {
 			continue
 		}
 		py.Install(dep)
-	}
-
-	// install non-wheel dependencies
-	py.RunAndPrint("import sys")
-	py.RunAndPrint("sys.path.insert(0, '.')")
-	unzip := []string{
-		"include/restructuredtext_lint.zip",
-		"include/flake8_quotes.zip",
-	}
-	extract := scripts.ReadExtract()
-	for _, name := range unzip {
-		archive := scripts.Read(name)
-		encoded := base64.StdEncoding.EncodeToString(archive)
-		py.Set("archive", encoded)
-		py.RunAndPrint(extract)
 	}
 
 	flake8 := NewFlake8(window, doc, editor, &py)
