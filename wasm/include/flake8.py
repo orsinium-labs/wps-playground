@@ -1,11 +1,16 @@
 import json
+import site
 import sys
+import os
 from pathlib import Path
 from random import choice
 from string import ascii_lowercase
 from textwrap import dedent
 from unittest.mock import Mock, patch
 
+
+# reset cache of packages (see importlib.metadata.FastPath.mtime)
+os.utime(site.getsitepackages()[0])
 
 # for type annotations in flake8
 sys.modules['multiprocessing'] = Mock()
