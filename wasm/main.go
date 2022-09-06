@@ -33,6 +33,7 @@ func main() {
 	}
 	py.PrintOut("Python is ready")
 	py.RunAndPrint("'Hello world!'")
+	py.Register()
 
 	ok := py.InitMicroPip()
 	if !ok {
