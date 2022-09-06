@@ -61,10 +61,16 @@ func (fh *Flake8) Run() {
 	fh.py.Clear()
 	fh.py.Set("text", fh.editor.Call("getValue").String())
 	fh.py.Set("config", fh.conf.Text())
-	fh.py.RunAndPrint(fh.script)
+	ok := fh.py.RunAndPrint(fh.script)
+	if !ok {
+		return
+	}
 
 	fh.py.Clear()
-	fh.py.RunAndPrint("code")
+	ok = fh.py.RunAndPrint("code")
+	if !ok {
+		return
+	}
 
 	cmd := "'\\n'.join(app.formatter._out)"
 	fh.py.PrintIn(cmd)

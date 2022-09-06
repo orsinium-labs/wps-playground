@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"syscall/js"
 
 	"github.com/life4/gweb/web"
 )
@@ -12,8 +13,17 @@ type Python struct {
 	output  web.HTMLElement
 }
 
+func (py *Python) Register() {
+	wrapped := func(this js.Value, args []js.Value) interface{} {
+		cmd := py.doc.Element("py-input-text").Get("value").String()
+		py.RunAndPrint(cmd)
+		return true
+	}
+	py.doc.Element("py-input-form").Call("addEventListener", "submit", js.FuncOf(wrapped))
+}
+
 func (py Python) print(text string, cls string) {
-	el := py.doc.CreateElement("div")
+	el := py.doc.CreateElement("pre")
 	el.Attribute("class").Set("alert alert-" + cls)
 	el.SetText(text)
 	py.output.Node().AppendChild(el.Node())
@@ -32,17 +42,32 @@ func (py Python) PrintErr(text string) {
 }
 
 func (py Python) Run(cmd string) string {
-	return py.pyodide.Call("runPython", cmd).String()
+	result := py.pyodide.Call("runPython", cmd)
+	if result.Type() == js.TypeObject {
+		return result.Call("toString").String()
+	}
+	return result.String()
 }
 
-func (py Python) RunAndPrint(cmd string) {
+func (py Python) RunAndPrint(cmd string) (ok bool) {
+	ok = true
+	defer func() {
+		err := recover()
+		if err != nil {
+			py.PrintErr(fmt.Sprintf("%v", err))
+			ok = false
+		}
+	}()
 	py.PrintIn(cmd)
 	result := py.Run(cmd)
-	py.PrintOut(result)
+	if result != "<undefined>" {
+		py.PrintOut(result)
+	}
+	return ok
 }
 
 func (py Python) Install(pkg string) bool {
-	cmd := fmt.Sprintf("micropip.install('%s')", pkg)
+	cmd := fmt.Sprintf("micropip.install('%s', deps=False)", pkg)
 	py.PrintIn(cmd)
 	_, fail := py.pyodide.Call("runPython", cmd).Promise().Get()
 	if fail.Truthy() {
@@ -54,7 +79,7 @@ func (py Python) Install(pkg string) bool {
 }
 
 func (py Python) Set(name string, text string) {
-	py.pyodide.Get("globals").Set(name, text)
+	py.pyodide.Get("globals").Call("set", name, text)
 }
 
 func (py Python) Clear() {

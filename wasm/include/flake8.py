@@ -1,12 +1,26 @@
 import json
+import site
+import sys
+import os
 from pathlib import Path
 from random import choice
 from string import ascii_lowercase
 from textwrap import dedent
+from unittest.mock import Mock, patch
 
-from flake8.main.application import Application
-from flake8.formatting.base import BaseFormatter
-from flake8.style_guide import Violation
+
+# reset cache of packages (see importlib.metadata.FastPath.mtime)
+os.utime(site.getsitepackages()[0])
+
+# for type annotations in flake8
+sys.modules['multiprocessing'] = Mock()
+sys.modules['multiprocessing.pool'] = Mock()
+patch("multiprocessing.pool", Mock())
+
+if True:  # lazy way to avoid isort and autopep8 moving it
+    from flake8.main.application import Application
+    from flake8.formatting.base import BaseFormatter
+    from flake8.style_guide import Violation
 
 # set from the caller by patching globals
 config: str
