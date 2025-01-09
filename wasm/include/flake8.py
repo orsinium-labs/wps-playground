@@ -76,9 +76,10 @@ app = App()
 code = 0
 try:
     app.run(['--jobs=0', str(path)])
-    app.exit()
 except SystemExit as err:
     code = int(err.args[0])
+else:
+    code = app.exit_code()
 
 # remove file
 path.unlink()
